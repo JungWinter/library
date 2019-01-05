@@ -12,16 +12,20 @@ _start:
     movw $0xFFFF, %sp
     movw $0xFFFF, %bp
 
-    movw $0xB800, %ax
-    movw %ax, %ds
+    // read 1 sector
+    // sector 1 to 0x9000
+    // es: 0x9000 bx: 0x0000
+    movw $0x0201, %ax // %ah=2h: read from disk
+    // CHS mode
+    movw $0x0900, %bx
+    movw %bx, %es
+    movw $0x0000, %bx
+    movb $0x00, %ch // cylinder 0
+    movb $0x00, %dh // head 0
+    movb $0x02, %cl // sector 2
+    movb $0x80, %dl // drive HDD 1
+    int $0x13
+    ljmp $0x0900, $0x0000
 
-    movb $'H, (0x00)
-    movb $0x4A, (0x01)
-    movb $'I, (0x02)
-    movb $0x4A, (0x03)
-    movb $'!, (0x04)
-    movb $0x4A, (0x05)
-
-    jmp .
     .space 510 - (. - _start), 0
     .word 0xAA55
