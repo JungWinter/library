@@ -14,6 +14,10 @@ _setup:
     movb $'!, (0x04)
     movb $0x4B, (0x05)
 
+    // Enable A20 gate
+    mov $0x2401, %ax
+    int $0x15
+
     jmp .
 
 .space 512 - (. - _setup), 0
