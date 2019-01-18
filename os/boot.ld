@@ -6,6 +6,8 @@ SECTIONS
     .boot :
     {
         *(.boot.bootsect)
+        *(.boot.head)
+        . = ALIGN(512);
         *(.boot.bootsetup)
     }
     . = ALIGN(512);

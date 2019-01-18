@@ -1,12 +1,15 @@
 all: boot.img
 
-boot.img: bootsect.o setup.o
+boot.img: bootsect.o setup.o head.o
 	x86_64-elf-ld -T boot.ld -melf_i386 $^ -o boot.img
 
 bootsect.o: bootsect.S
 	x86_64-elf-gcc -m32 -c -o $@ $<
 
 setup.o: setup.S
+	x86_64-elf-gcc -m32 -c -o $@ $<
+
+head.o: head.S
 	x86_64-elf-gcc -m32 -c -o $@ $<
 
 run: boot.img
